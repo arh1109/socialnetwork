@@ -1,0 +1,32 @@
+# Django standard ignores
+
+*.egg-info
+*.pot
+*.py[co]
+.tox/
+__pycache__/
+MANIFEST
+dist/
+docs/_build/
+docs/locale/
+node_modules/
+tests/coverage_html/
+tests/.coverage*
+build/
+tests/report/
+tests/screenshots/
+
+# Virtual environment
+venv/
+
+# SQLite (local dev only)
+db.sqlite3
+
+# Static & media (collected/served files)
+staticfiles/
+media/
+
+# OS / editor files
+.DS_Store
+.idea/
+.vscode/

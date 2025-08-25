@@ -1,0 +1,9 @@
+body { font-family: system-ui, sans-serif; margin: 0; }
+.navbar { display:flex; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #eee; }
+.brand { font-weight:700; text-decoration:none; }
+.container { max-width:960px; margin:24px auto; padding:0 16px; }
+.btn-primary { background:#0b5; color:white; padding:8px 12px; border-radius:6px; text-decoration:none; }
+.user-pill { padding:4px 8px; background:#f3f3f3; border-radius:999px; margin:0 8px; }
+.messages { list-style:none; padding:0; }
+.msg { padding:8px 10px; margin:8px 0; border-radius:6px; background:#f5f5f5; }
+.footer { padding:24px 16px; border-top:1px solid #eee; text-align:center; color:#777; }

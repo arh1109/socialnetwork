@@ -1,0 +1,24 @@
+<nav class="navbar">
+  <div class="nav-left">
+    <a class="brand" href="{% url 'home' %}">socialnetwork</a>
+  </div>
+
+  <div class="nav-right">
+    {% if user.is_authenticated %}
+      <!-- Authenticated navbar: (icons later) -->
+      <a href="#">Home</a>
+      <a href="#">Search</a>
+      <a href="#">Notifications</a>
+      <a href="#">Settings</a>
+      <span class="user-pill">@{{ user.username }}</span>
+      <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="linklike">Logout</button>
+        </form>
+    {% else %}
+      <!-- Logged-out navbar -->
+      <a href="{% url 'login' %}">Login</a>
+      <a class="btn-primary" href="{% url 'register' %}">Register</a>
+    {% endif %}
+  </div>
+</nav>

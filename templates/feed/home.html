@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if user.is_authenticated %}
+    <h1>Welcome back, {{ user.username }}!</h1>
+    <p>Your feed will live here. For Milestone 0 this is just a placeholder.</p>
+  {% else %}
+    <section class="hero">
+      <h1>Welcome to socialnetwork</h1>
+      <p>Connect with friends. Share posts. Show your work.</p>
+      <p><a class="btn-primary" href="{% url 'register' %}">Get started</a></p>
+    </section>
+  {% endif %}
+{% endblock %}

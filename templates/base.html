@@ -7,17 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="{% static 'css/site.css' %}" rel="stylesheet">
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
   {% include "_navbar.html" %}
 
-  <main class="container">
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li class="msg {{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+    <main class="container {% block main_class %}{% endblock %}"
+        {% block main_style %}{% endblock %}>
+    {% block flash %}
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="msg {{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endblock %}
 
     {% block content %}{% endblock %}
   </main>

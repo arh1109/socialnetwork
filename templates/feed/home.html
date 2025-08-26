@@ -1,13 +1,63 @@
 {% extends "base.html" %}
+{% load static %}
+
+{# switch main layout by auth state #}
+{% block main_class %}
+  {% if user.is_authenticated %}layout-3{% else %}hero-bg splash{% endif %}
+{% endblock %}
+{% block main_style %}
+  {% if not user.is_authenticated %}
+    style="background-image: url('{% static 'img/helena-lopes-unsplash.jpg' %}');"
+  {% endif %}
+{% endblock %}
+{% block flash %}{% endblock %}
+
 {% block content %}
   {% if user.is_authenticated %}
-    <h1>Welcome back, {{ user.username }}!</h1>
-    <p>Your feed will live here. For Milestone 0 this is just a placeholder.</p>
+    <aside class="col-left">
+      <h2>Pages</h2>
+      <ul class="card">
+        <li><a href="#">My Page</a></li>
+        <li><a href="#">Project Updates</a></li>
+        <li><a href="#">Study Group</a></li>
+      </ul>
+    </aside>
+
+    <section class="col-center">
+  {% include "feed/partials/_composer.html" with form=form composer_id="composer" %}
+
+  {# flash message goes RIGHT under the composer #}
+  {% if messages %}
+    <ul id="feed-flash" class="messages feed-flash" data-autodismiss="5000">
+      {% for message in messages %}
+        <li class="msg {{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% for post in posts %}
+    {% include "feed/partials/_post.html" with post=post %}
+  {% empty %}
+    <div class="card" style="text-align:center; margin: 16px auto; width: 80%;">No posts yet.</div>
+  {% endfor %}
+</section>
+
+    <aside class="col-right">
+      <h2>Friend Suggestions</h2>
+      <ul class="card">
+        <li><a href="#">@alice</a></li>
+        <li><a href="#">@bob</a></li>
+        <li><a href="#">@carol</a></li>
+      </ul>
+    </aside>
   {% else %}
-    <section class="hero">
+    <div class="hero-card">
       <h1>Welcome to socialnetwork</h1>
       <p>Connect with friends. Share posts. Show your work.</p>
       <p><a class="btn-primary" href="{% url 'register' %}">Get started</a></p>
-    </section>
+    </div>
   {% endif %}
+
+  {# Lightweight JS just for this page #}
+  <script src="{% static 'js/feed.js' %}"></script>
 {% endblock %}

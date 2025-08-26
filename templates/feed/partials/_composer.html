@@ -1,0 +1,43 @@
+{# templates/feed/partials/_composer.html #}
+<div id="{{ composer_id|default:'composer' }}" class="composer card" style="width:80%; margin: 0 auto 24px;">
+  <form action="{% url 'post_create' %}" method="post" enctype="multipart/form-data" id="composer-form">
+    {% csrf_token %}
+
+    {# Row 1: avatar + expanding textarea #}
+    <div class="composer-row composer-row-1">
+      <div class="avatar-sm">
+        {% if request.user.avatar %}
+          <img src="{{ request.user.avatar.url }}" alt="avatar">
+        {% else %}
+          <div class="avatar-placeholder"></div>
+        {% endif %}
+      </div>
+      <div class="composer-input">
+        {{ form.text }}
+        {% if form.non_field_errors %}
+          <div class="form-errors">{{ form.non_field_errors }}</div>
+        {% endif %}
+      </div>
+    </div>
+
+    {# Attachment preview grid (appears when selecting files) #}
+    <div class="thumb-grid-wrap" id="thumb-grid-wrap" hidden>
+      <div class="thumb-grid" id="thumb-grid"></div>
+      <button type="button" class="linklike" id="thumbs-toggle" hidden>Show more</button>
+    </div>
+
+    {# Row 2: Photo/Video buttons (left) + Post (right) #}
+    <div class="composer-row composer-row-2">
+      <div class="left-actions">
+        <label class="btn-secondary">
+          Photo
+          {{ form.attachments.as_widget }}
+        </label>
+        <button type="button" class="btn-secondary" id="add-video-btn">Video</button>
+      </div>
+      <div class="right-actions">
+        <button class="btn-primary" type="submit">Post</button>
+      </div>
+    </div>
+  </form>
+</div>

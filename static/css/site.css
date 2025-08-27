@@ -1,164 +1,66 @@
-/* handy reset */
+/* ===== Base / Layout ===== */
 * { box-sizing: border-box; }
 html, body { height: 100%; }
-body { font-family: system-ui, sans-serif; margin: 0; }
-
-/* page layout: nav (auto) / main (fills) / footer (auto) */
 body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  min-height: 100svh; /* handles mobile browser UI better than 100vh */
+  min-height: 100svh; /* better than 100vh on mobile UIs */
 }
+body.no-scroll { overflow: hidden; }
 
-/* navbar + footer (your existing styles are fine) */
-.navbar { display:flex; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #eee; }
+
 .footer { padding:24px 16px; border-top:1px solid #eee; text-align:center; color:#777; }
-
 .brand { font-weight:700; text-decoration:none; }
 
-/* main fills the middle row; remove the calc() and keep it full width */
 .container { max-width: 100%; }
 main.container {
-  /* no min-height calc here */
   display: grid;
-  place-items: center;
+  place-items: center;      /* centered splash by default */
   padding: 24px 16px;
 }
 
-/* optional: prevent scroll on splash-only pages */
-body.no-scroll { overflow: hidden; }
-
-/* hero background */
-.hero-bg {
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  /* background-attachment: fixed;  <-- remove this if you see jank/scroll with some GPUs */
-}
-
-/* buttons & misc (unchanged) */
+/* ===== Buttons / Messages ===== */
 .btn-primary { background:#0b5; color:white; padding:8px 12px; border-radius:6px; text-decoration:none; }
-.user-pill { padding:4px 8px; background:#f3f3f3; border-radius:999px; margin:0 8px; }
-.messages { list-style:none; padding:0; }
-.msg { padding:8px 10px; margin:8px 0; border-radius:6px; background:#f5f5f5; }
-
-/* overlay card on splash */
-.hero-card {
-  background: rgba(0,0,0,0.4);
-  color: #fff;
-  padding: 32px;
-  border-radius: 12px;
-  max-width: 640px;
-  text-align: center;
-}
-
-/* 3-column layout (left == right; center ~ 50%) */
-main.container.layout-3 {
-  /* base grid overrides for authed layout */
-  grid-template-columns: 1fr 2fr 1fr;   /* 25% | 50% | 25% */
-  gap: 24px;
-  justify-items: stretch;
-  align-items: start;
-  /* optional: remove centering used by splash */
-  place-items: initial;
-}
-
-/* optional nice widths so columns don't get too skinny on mid screens */
-main.container.layout-3 > .col-left  { min-width: 240px; }
-main.container.layout-3 > .col-center{ min-width: 520px; }
-main.container.layout-3 > .col-right { min-width: 240px; }
-
-/* cards */
-.card { background:#fff; border:1px solid #e7e7e7; border-radius:12px; padding:16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-
-/* avatars */
-.avatar-sm { width:40px; height:40px; border-radius:50%; overflow:hidden; background:#f1f1f1; flex:0 0 40px; }
-.avatar-sm img { width:100%; height:100%; object-fit:cover; display:block; }
-.avatar-placeholder { width:100%; height:100%; border-radius:50%; background:linear-gradient(135deg,#ddd,#f4f4f4); }
-
-/* composer */
-.composer-row { display:flex; gap:12px; align-items:flex-start; }
-.composer-row-1 { margin-bottom:12px; }
-.composer-input textarea.composer-textarea {
-  width:100%;
-  max-height: 160px;        /* Stop expanding after this, then scroll */
-  resize: none;             /* we handle auto-resize via JS */
-  overflow:auto;            /* scrollbar after max-height */
-  border:1px solid #ddd; border-radius:10px; padding:10px;
-}
-
-/* hide the default file input (we wrap it in the label) */
-.composer-row-2 input[type="file"] { display:none; }
-.composer-row-2 { justify-content:space-between; align-items:center; }
 .btn-secondary { background:#eef6ff; border:1px solid #cfe4ff; padding:8px 10px; border-radius:8px; }
 .btn-ghost { background:transparent; border:1px solid #ddd; padding:6px 10px; border-radius:8px; }
 .linklike { background:none; border:none; color:#06c; text-decoration:underline; cursor:pointer; padding:6px 0; }
 
-/* attachment thumbnails (composer) */
-.thumb-grid-wrap { margin: 8px 0 10px; }
-.thumb-grid {
-  display:grid;
-  grid-template-columns: repeat(6, 60px);
-  gap:6px;
-  max-height: 132px;    /* ~2 rows (60px + gap) */
-  overflow:hidden;
-  padding:4px 0;
-}
-.thumb-grid.expanded { max-height: none; }
-.thumb {
-  width:60px; height:60px; border-radius:6px; overflow:hidden; border:1px solid #ddd; background:#fafafa;
-  display:flex; align-items:center; justify-content:center;
-}
-.thumb img, .thumb video { width:100%; height:100%; object-fit:cover; display:block; }
-
-/* post header & text clamp */
-.post-header { display:flex; gap:12px; }
-.post-meta { flex:1; }
-.username { font-weight:600; margin-bottom:4px; }
-.post-text { white-space:pre-wrap; }
-.clamp-5 {
-  display:-webkit-box;
-  -webkit-line-clamp:5;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-.clamp-5.expanded {
-  -webkit-line-clamp:unset;
-}
-
-/* media grid in posts: 1-3 columns, rows grow as needed */
-.media-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-top:10px; }
-.media-cell { width:100%; border-radius:8px; overflow:hidden; border:1px solid #eee; background:#fafafa; }
-.media-cell img, .media-cell video { width:100%; height:100%; max-height:360px; object-fit:cover; display:block; }
-
-/* show only first 2 rows unless expanded (6 items since 3 cols) */
-.media-grid-wrap .media-grid { max-height: 760px; overflow:hidden; } /* 2 rows ~ 2 * (360 + gap) */
-.media-grid-wrap.expanded .media-grid { max-height: none; }
-
-/* actions & comments */
-.post-actions { display:flex; gap:8px; padding-top:10px; border-top:1px solid #eee; margin-top:12px; }
-.comment-form { display:flex; gap:10px; align-items:flex-start; margin-top:10px; }
-.comment-form textarea { flex:1; border:1px solid #ddd; border-radius:8px; padding:8px; resize:vertical; }
-.comment { margin:8px 0 0 50px; } /* indent under avatar */
-.form-errors { color:#b00; margin-top:6px; }
-
-/* static/css/site.css */
-.feed-flash { width: 80%; margin: 8px auto 0; }
-.msg.success { background:#e9f9ef; border:1px solid #bfe8cb; }  /* optional polish */
+.user-pill { padding:4px 8px; background:#f3f3f3; border-radius:999px; margin:0 8px; }
+.messages { list-style:none; padding:0; }
+.msg { padding:8px 10px; margin:8px 0; border-radius:6px; background:#f5f5f5; }
+.msg.success { background:#e9f9ef; border:1px solid #bfe8cb; }
 .msg.error   { background:#fdeaea; border:1px solid #f5bcbc; }
-
 .fade-out { opacity: 0; transition: opacity 300ms ease; }
+.feed-flash { width: 80%; margin: 8px auto 0; }
 
-/* optional sticky sidebars */
+/* ===== 3-column feed layout (authed) ===== */
+main.container.layout-3 {
+  grid-template-columns: 1fr 2fr 1fr;   /* 25% | 50% | 25% */
+  gap: 24px;
+  justify-items: stretch;
+  align-items: start;
+  place-items: initial;                  /* cancel splash centering */
+}
+main.container.layout-3 > .col-left  { min-width: 240px; }
+main.container.layout-3 > .col-center{ min-width: 520px; }
+main.container.layout-3 > .col-right { min-width: 240px; }
+
+/* Cards */
+.card { background:#fff; border:1px solid #e7e7e7; border-radius:12px; padding:16px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+
+/* Avatars */
+.avatar-sm { width:40px; height:40px; border-radius:50%; overflow:hidden; background:#f1f1f1; flex:0 0 40px; }
+.avatar-sm img { width:100%; height:100%; object-fit:cover; display:block; }
+.avatar-placeholder { width:100%; height:100%; border-radius:50%; background:linear-gradient(135deg,#ddd,#f4f4f4); }
+
+/* ===== Sticky sidebars & responsive ===== */
 @media (min-width: 992px) {
   .col-left, .col-right { position: sticky; top: 16px; align-self: start; }
 }
-
-/* responsive collapse on small screens */
 @media (max-width: 992px) {
-  main.container.layout-3 {
-    grid-template-columns: 1fr;  /* single column */
-  }
+  main.container.layout-3 { grid-template-columns: 1fr; }
   .col-center { order: 1; }
-  .col-left, .col-right { order: 2; }  /* center first on mobile */
+  .col-left, .col-right { order: 2; }
 }

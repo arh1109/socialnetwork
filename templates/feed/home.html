@@ -1,5 +1,12 @@
 {% extends "base.html" %}
+
 {% load static %}
+{% block extra_css %}
+    {{block.super }}
+    <link rel="stylesheet" href="{% static 'css/pages/home.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/components/composer.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/components/post.css' %}?v=1">
+{% endblock %}
 
 {# switch main layout by auth state #}
 {% block main_class %}
@@ -59,5 +66,5 @@
   {% endif %}
 
   {# Lightweight JS just for this page #}
-  <script src="{% static 'js/feed.js' %}"></script>
+  <script src="{% static 'js/feed.js' %}?v=5"></script>
 {% endblock %}

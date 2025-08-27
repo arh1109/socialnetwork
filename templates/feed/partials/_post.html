@@ -1,50 +1,77 @@
 {# templates/feed/partials/_post.html #}
 <div class="post card" style="width:80%; margin: 16px auto;">
-  {# Row 1: avatar + name + text (clamped) #}
+  {# Row 1: avatar + name(+ Edited) + text (clamped) + 3-dot menu #}
   <div class="post-header">
+    {% if post.author.username %}
+  <a class="avatar-sm avatar-link" href="{{ request.user.get_absolute_url }}">"
+    {% if post.author.avatar %}
+      <img src="{{ post.author.avatar.url }}" alt="@{{ post.author.username }} avatar">
+    {% else %}
+      <div class="avatar-placeholder"></div>
+    {% endif %}
+  </a>
+    {% else %}
     <div class="avatar-sm">
-      {% if post.author.avatar %}
+        {% if post.author.avatar %}
         <img src="{{ post.author.avatar.url }}" alt="avatar">
-      {% else %}
+        {% else %}
         <div class="avatar-placeholder"></div>
-      {% endif %}
+        {% endif %}
     </div>
+    {% endif %}
+
     <div class="post-meta">
-      <div class="username">@{{ post.author.username }}</div>
-      {% if post.text %}
-        <div class="post-text clamp-5" data-post-id="{{ post.id }}">
-          {{ post.text|linebreaksbr }}
-        </div>
-        <button type="button" class="linklike read-more" data-target="{{ post.id }}" hidden>Read more</button>
-      {% endif %}
+      <div class="username">
+        @{{ post.author.username }}
+        {% if post.edited_at %}
+          <span class="edited-badge">Edited</span>
+        {% endif %}
+      </div>
+
+      <div class="post-text-wrap" data-post-id="{{ post.id }}">
+        {% if post.text %}
+          <div class="post-text clamp-5" data-post-id="{{ post.id }}">
+            {{ post.text|linebreaksbr }}
+          </div>
+          <button type="button" class="linklike read-more" data-target="{{ post.id }}" hidden>Read more</button>
+        {% endif %}
+      </div>
+    </div>
+
+    {# inside .post header area where the menu button lives #}
+{% if can_manage or post.author_id == request.user.id %}
+  <div class="post-menu">
+    <button class="menu-btn" aria-haspopup="true" aria-expanded="false">⋮</button>
+    <div class="menu" hidden>
+      <a href="#" class="post-edit" data-post-id="{{ post.id }}" role="menuitem">Edit</a>
+      <hr class="menu-sep">
+      <a href="#" class="post-delete" data-post-id="{{ post.id }}" role="menuitem">Delete</a>
     </div>
   </div>
+{% endif %}
+  </div>  {# /post-header #}
 
-  {# Row 2: media grid (1–3 cols) #}
-  {% if post.media.all %}
-    {% with media_list=post.media.all %}
-    <div class="media-grid-wrap" data-post-id="{{ post.id }}">
-      <div class="media-grid">
-        {% for m in media_list %}
-          {% if m.kind == 'photo' %}
-            <div class="media-cell">
-              <img src="{{ m.file.url }}" alt="photo">
-            </div>
-          {% else %}
-            <div class="media-cell">
-              <video controls preload="metadata">
-                <source src="{{ m.file.url }}">
-              </video>
-            </div>
-          {% endif %}
-        {% endfor %}
+  {# Row 2: media grid (1–3 cols) — ONLY render if there is media #}
+  {% with media_list=post.media.all %}
+    {% if media_list|length %}
+      <div class="media-grid-wrap" data-post-id="{{ post.id }}">
+        <div class="media-grid">
+          {% for m in media_list %}
+            {% if m.kind == 'photo' %}
+              <div class="media-cell"><img src="{{ m.file.url }}" alt="photo"></div>
+            {% else %}
+              <div class="media-cell">
+                <video controls preload="metadata"><source src="{{ m.file.url }}"></video>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% if media_list|length > 6 %}
+          <button type="button" class="linklike view-more" data-target="{{ post.id }}">View more</button>
+        {% endif %}
       </div>
-      {% if media_list|length > 6 %}
-        <button type="button" class="linklike view-more" data-target="{{ post.id }}">View more</button>
-      {% endif %}
-    </div>
-    {% endwith %}
-  {% endif %}
+    {% endif %}
+  {% endwith %}
 
   {# Row 3: actions #}
   <div class="post-actions">
@@ -57,21 +84,31 @@
   <div class="comments" id="comments-{{ post.id }}" hidden>
     <form action="{% url 'add_comment' post.id %}" method="post" class="comment-form">
       {% csrf_token %}
-      <div class="avatar-sm">
-        {% if request.user.avatar %}
-          <img src="{{ request.user.avatar.url }}" alt="avatar">
-        {% else %}
-          <div class="avatar-placeholder"></div>
-        {% endif %}
-      </div>
+      {% if post.author.username %}
+  <a class="avatar-sm avatar-link" href="{{ request.user.get_absolute_url }}">
+    {% if post.author.avatar %}
+      <img src="{{ post.author.avatar.url }}" alt="@{{ post.author.username }} avatar">
+    {% else %}
+      <div class="avatar-placeholder"></div>
+    {% endif %}
+  </a>
+{% else %}
+  <div class="avatar-sm">
+    {% if post.author.avatar %}
+      <img src="{{ post.author.avatar.url }}" alt="avatar">
+    {% else %}
+      <div class="avatar-placeholder"></div>
+    {% endif %}
+  </div>
+{% endif %}
       <textarea name="comment_text" rows="2" placeholder="Write a comment..." required></textarea>
       <button class="btn-primary" type="submit">Post</button>
     </form>
 
-    {% for c in post.comments.all %}
-      <div class="comment">
-        <strong>@{{ c.author.username }}</strong> {{ c.text|linebreaksbr }}
-      </div>
-    {% endfor %}
+    <a class="avatar-sm avatar-link" href="{{ request.user.get_absolute_url }}">
+        {% if c.author.avatar %}<img src="{{ c.author.avatar.url }}">{% else %}
+            <div class="avatar-placeholder"></div>
+        {% endif %}
+    </a>
   </div>
 </div>

@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/components/post.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/components/composer.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/pages/profile-styles.css' %}?v=1">
+  <link rel="stylesheet" href="{% static 'css/pages/profile-posts.css' %}?v=1">  {# new #}
+{% endblock %}
+
+{% block main_class %}profile-layout{% endblock %}
+
+{% block content %}
+<section class="profile-page">
+  <!-- Cover + header (yours as before) -->
+  <div class="cover-photo {% if profile_user.cover_photo %}has-cover{% endif %}"
+       {% if profile_user.cover_photo %}style="background-image:url('{{ profile_user.cover_photo.url }}');"{% endif %}>
+  </div>
+
+  <div class="profile-header">
+    <a class="avatar-lg-link" href="{% url 'profile' username=profile_user.username %}">
+      {% if profile_user.avatar %}
+        <img class="avatar-lg" src="{{ profile_user.avatar.url }}" alt="@{{ profile_user.username }} avatar">
+      {% else %}
+        <div class="avatar-placeholder lg"></div>
+      {% endif %}
+    </a>
+
+    <div class="profile-basic">
+      <div class="name-row">
+        <h1 class="username">@{{ profile_user.username }}</h1>
+        {% if is_owner %}<a class="btn-ghost edit-profile" href="#">Edit profile</a>{% endif %}
+      </div>
+      <div class="friend-count">{{ friend_count }} friends</div>
+    </div>
+  </div>
+
+  <nav class="profile-tabs">
+    <a href="#" class="tab active">Posts</a>
+    <a href="#" class="tab">About</a>
+    <a href="#" class="tab">Friends</a>
+    <a href="#" class="tab">Photos</a>
+    <a href="#" class="tab">Videos</a>
+  </nav>
+
+  <!-- POSTS TAB CONTENT -->
+  <div id="profile-posts" class="profile-posts">
+    <!-- LEFT COLUMN (≈30%) -->
+    <aside class="profile-side">
+      <!-- Intro -->
+      <div class="card intro-card">
+        <h3>Intro</h3>
+        {% if bio %}
+          <p class="bio-text">{{ bio }}</p>
+        {% else %}
+          <a class="btn-ghost" href="#">Add bio</a>
+        {% endif %}
+
+        <div class="relationship">
+          <span class="heart" aria-hidden="true">♥</span>
+          <span class="status">{{ relationship_status|default:"Not set" }}</span>
+        </div>
+        <a class="btn-ghost" href="#">Edit Status</a>
+      </div>
+
+      <!-- Photos -->
+      <div class="card photos-card">
+        <div class="card-row between">
+          <h3>Photos</h3>
+          <a class="linklike" href="#">See All Photos</a>
+        </div>
+
+        {% if recent_photos %}
+          <div class="grid-3x3 photos-grid">
+            {% for m in recent_photos %}
+              <a class="photo-cell" href="{{ m.file.url }}" target="_blank" rel="noopener">
+                <img src="{{ m.file.url }}" alt="photo {{ forloop.counter }}">
+              </a>
+            {% endfor %}
+            {% for _ in photo_placeholders %}
+              <div class="photo-cell placeholder"></div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="muted">User has no photos.</p>
+        {% endif %}
+      </div>
+
+      <!-- Friends -->
+      <div class="card friends-card">
+        <div class="card-row between">
+          <div>
+            <h3>Friends</h3>
+            <div class="subtle">{{ friend_count }} friends</div>
+          </div>
+          <a class="linklike" href="#">See All Friends</a>
+        </div>
+
+        {% if friends_preview %}
+          <div class="grid-3x3 friends-grid">
+            {% for f in friends_preview %}
+              <a class="friend-cell" href="{{ f.get_absolute_url|default:'#' }}">
+                <span class="avatar-circle">
+                  {% if f.avatar %}<img src="{{ f.avatar.url }}" alt="@{{ f.username }}">{% endif %}
+                </span>
+                <span class="label">@{{ f.username }}</span>
+              </a>
+            {% endfor %}
+            {% for _ in friend_placeholders %}
+              <div class="friend-cell placeholder"></div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="muted">No friends to show.</p>
+        {% endif %}
+      </div>
+    </aside>
+
+    <!-- RIGHT COLUMN (≈70%) -->
+    <div class="profile-main">
+      {% include "feed/partials/_composer.html" with form=form %}
+
+      {% for post in posts %}
+        {# Only show 3-dot menu to owner on profile wall #}
+        {% include "feed/partials/_post.html" with post=post can_manage=is_owner %}
+      {% empty %}
+        <div class="card">No posts yet.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

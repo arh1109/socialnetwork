@@ -3,15 +3,25 @@
   <form action="{% url 'post_create' %}" method="post" enctype="multipart/form-data" id="composer-form">
     {% csrf_token %}
 
-    {# Row 1: avatar + expanding textarea #}
     <div class="composer-row composer-row-1">
-      <div class="avatar-sm">
-        {% if request.user.avatar %}
-          <img src="{{ request.user.avatar.url }}" alt="avatar">
-        {% else %}
-          <div class="avatar-placeholder"></div>
-        {% endif %}
-      </div>
+      {% if request.user.is_authenticated and request.user.username %}
+  <a class="avatar-sm avatar-link" href="{{ request.user.get_absolute_url }}">
+    {% if request.user.avatar %}
+      <img src="{{ request.user.avatar.url }}" alt="@{{ request.user.username }} avatar">
+    {% else %}
+      <div class="avatar-placeholder"></div>
+    {% endif %}
+  </a>
+{% else %}
+  <div class="avatar-sm">
+    {% if request.user.is_authenticated and request.user.avatar %}
+      <img src="{{ request.user.avatar.url }}" alt="avatar">
+    {% else %}
+      <div class="avatar-placeholder"></div>
+    {% endif %}
+  </div>
+{% endif %}
+
       <div class="composer-input">
         {{ form.text }}
         {% if form.non_field_errors %}
@@ -20,20 +30,19 @@
       </div>
     </div>
 
-    {# Attachment preview grid (appears when selecting files) #}
+    {# where we will append hidden file inputs #}
+    <div id="file-inputs"></div>
+
+    {# preview area (keep as-is) #}
     <div class="thumb-grid-wrap" id="thumb-grid-wrap" hidden>
       <div class="thumb-grid" id="thumb-grid"></div>
       <button type="button" class="linklike" id="thumbs-toggle" hidden>Show more</button>
     </div>
 
-    {# Row 2: Photo/Video buttons (left) + Post (right) #}
     <div class="composer-row composer-row-2">
       <div class="left-actions">
-        <label class="btn-secondary">
-          Photo
-          {{ form.attachments.as_widget }}
-        </label>
-        <button type="button" class="btn-secondary" id="add-video-btn">Video</button>
+        <button type="button" class="btn-secondary" id="add-photo">Photo</button>
+        <button type="button" class="btn-secondary" id="add-video">Video</button>
       </div>
       <div class="right-actions">
         <button class="btn-primary" type="submit">Post</button>

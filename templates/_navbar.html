@@ -1,24 +1,43 @@
+{# templates/_navbar.html #}
 <nav class="navbar">
   <div class="nav-left">
     <a class="brand" href="{% url 'home' %}">socialnetwork</a>
+    <a class="nav-link" href="{% url 'home' %}">Home</a>
+  </div>
+
+  <div class="nav-center">
+    {# basic GET search; action will change later to a real results page #}
+    <form class="search-form" action="#" method="get" role="search">
+      <input
+        class="search-input"
+        type="search"
+        name="q"
+        placeholder="Search users…"
+        aria-label="Search"
+      >
+      <button class="search-btn" type="submit" title="Search">
+        <span class="sr-only">Search</span>
+        <!-- tiny magnifying-glass SVG -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20l-6-6zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/>
+        </svg>
+      </button>
+    </form>
   </div>
 
   <div class="nav-right">
     {% if user.is_authenticated %}
-      <!-- Authenticated navbar: (icons later) -->
-      <a href="#">Home</a>
-      <a href="#">Search</a>
-      <a href="#">Notifications</a>
-      <a href="#">Settings</a>
+      <a class="icon-btn" href="#" title="Notifications">🔔</a>
+      <a class="icon-btn" href="#" title="Settings">⚙️</a>
       <span class="user-pill">@{{ user.username }}</span>
-      <form action="{% url 'logout' %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="linklike">Logout</button>
-        </form>
+      <form action="{% url 'logout' %}" method="post" style="display:inline">
+        {% csrf_token %}
+        <button class="btn-ghost" type="submit">Logout</button>
+      </form>
     {% else %}
-      <!-- Logged-out navbar -->
-      <a href="{% url 'login' %}">Login</a>
-      <a class="btn-primary" href="{% url 'register' %}">Register</a>
+      <a class="btn-ghost" href="{% url 'register' %}">Register</a>
+      <a class="btn-primary" href="{% url 'login' %}">Login</a>
     {% endif %}
   </div>
 </nav>
+

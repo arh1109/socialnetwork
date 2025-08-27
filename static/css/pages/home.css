@@ -1,0 +1,18 @@
+/* pages/home.css — splash-only bits */
+
+/* full-bleed background on the <main> when logged out */
+.hero-bg {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* readable overlay card on top of the hero image */
+.hero-card {
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  padding: 32px;
+  border-radius: 12px;
+  max-width: 640px;
+  text-align: center;
+}

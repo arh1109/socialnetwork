@@ -1,0 +1,77 @@
+/* un-center main for this page */
+main.container.profile-layout { place-items: initial; }
+
+/* overall wrapper */
+.profile-page {
+  width: 80%;
+  margin: 0 auto 24px;
+}
+
+/* cover photo */
+.cover-photo {
+  height: 15svh;
+  min-height: 120px;
+  border-radius: 12px;
+  background: linear-gradient(135deg,#ececec,#fafafa);
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 16px;           /* add spacing after the cover */
+}
+.cover-photo.has-cover { background-image: var(--cover-url); } /* not used; inline style sets bg */
+
+/* header row under cover */
+.profile-header {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: center;           /* vertical centering in the row */
+  margin-top: 0;                 /* no negative pull-up */
+}
+
+/* 2) Center the avatar within its grid cell (both axes) */
+.profile-header > .avatar-lg-link {
+  justify-self: center;          /* horizontal center */
+  align-self: center;            /* vertical center */
+}
+
+/* avatar large */
+.avatar-lg-link { display: block; width: 120px; height: 120px; }
+.avatar-lg {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: block;
+}
+.avatar-placeholder.lg {
+  width: 120px; height: 120px; border-radius: 50%;
+  background: linear-gradient(135deg,#ddd,#f4f4f4);
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* name + actions */
+.profile-basic { padding-bottom: 8px; }
+.name-row { display:flex; align-items:center; gap:12px; flex-wrap: wrap; }
+.profile-basic .username { margin: 0; font-size: 22px; line-height: 1.25;}
+.edit-profile { padding: 6px 10px; }
+.friend-count { color:#666; margin-top: 4px; }
+
+/* tabs row */
+.profile-tabs {
+  display:flex; gap: 8px; margin-top: 16px;
+  border-bottom: 1px solid #eee; padding-bottom: 6px;
+}
+.profile-tabs .tab {
+  text-decoration:none; color:#333;
+  padding: 8px 12px; border-radius: 8px;
+}
+.profile-tabs .tab:hover { background:#f7f7f7; }
+.profile-tabs .tab.active { background:#eef6ff; border:1px solid #cfe4ff; }
+
+/* content area */
+.profile-content { margin-top: 16px; }
+
+/* make included post cards align to profile width */
+.profile-content .post.card { width: 100%; margin-left: 0; margin-right: 0; }

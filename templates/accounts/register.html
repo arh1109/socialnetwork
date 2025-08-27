@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/pages/auth.css' %}?v=1">
+{% endblock %}
 {% block content %}
   <h1>Create your account</h1>
   <form method="post" novalidate>

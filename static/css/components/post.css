@@ -1,0 +1,54 @@
+/* components/post.css */
+
+/* Post card + header */
+.post { position: relative; overflow: visible; }
+.post-header { display:flex; gap:12px; align-items:flex-start; }
+.post-meta { flex:1; }
+.username { font-weight:600; margin-bottom:4px; }
+.post-text { white-space:pre-wrap; }
+
+/* “Read more” clamp */
+.clamp-5 {
+  display:-webkit-box;
+  -webkit-line-clamp:5;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.clamp-5.expanded { -webkit-line-clamp:unset; }
+
+.edited-badge { font-size: 12px; color: #888; margin-left: 8px; opacity: 0.9; }
+
+/* Media grid inside posts */
+.media-grid-wrap, .media-grid { width: 100%; }
+.media-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-top:10px; }
+.media-cell { width:100%; border-radius:8px; overflow:hidden; border:1px solid #eee; background:#fafafa; }
+.media-cell img, .media-cell video { display:block; width:100%; height:100%; max-height:360px; object-fit:cover; }
+
+/* show only first 2 rows unless expanded (6 items since 3 cols) */
+.media-grid-wrap .media-grid { max-height: 760px; overflow:hidden; }
+.media-grid-wrap.expanded .media-grid { max-height: none; }
+
+/* Actions & comments */
+.post-actions { display:flex; gap:8px; padding-top:10px; border-top:1px solid #eee; margin-top:12px; }
+.comment-form { display:flex; gap:10px; align-items:flex-start; margin-top:10px; }
+.comment-form textarea { flex:1; border:1px solid #ddd; border-radius:8px; padding:8px; resize:vertical; }
+.comment { margin:8px 0 0 50px; }
+.form-errors { color:#b00; margin-top:6px; }
+
+/* 3-dot menu (scoped) */
+.post-menu { margin-left:auto; position:relative; }
+.menu-btn {
+  width: 32px; height: 32px; border:1px solid #ddd; border-radius:50%;
+  background:#fff; cursor:pointer; font-size:18px; line-height:1;
+  display:flex; align-items:center; justify-content:center;
+}
+.menu-btn:hover { background:#f5f5f5; }
+
+.post-menu .menu {
+  position:absolute; right:0; top:calc(100% + 8px); z-index:1000;
+  background:#fff; border:1px solid #ddd; border-radius:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08); min-width:180px; padding:4px;
+}
+.post-menu .menu a { display:block; padding:8px 12px; border-radius:6px; text-decoration:none; color:#333; }
+.post-menu .menu a:hover { background:#f5f7ff; }
+.menu-sep { border:none; border-top:1px solid #eee; margin:4px 0; }

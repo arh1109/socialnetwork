@@ -1,0 +1,194 @@
+/* Two-column layout: ~30% / 70% */
+#profile-posts.profile-posts {
+  display: grid;
+  grid-template-columns: 3fr 7fr; /* 30% / 70% proportion */
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.profile-side .card { margin-bottom: 16px; }
+.card-row.between { display:flex; justify-content:space-between; align-items:center; }
+.muted { color:#777; }
+.subtle { color:#666; font-size: 13px; }
+
+.intro-card .bio-text { margin: 6px 0 10px; }
+.relationship { display:flex; align-items:center; gap:8px; margin: 8px 0; }
+.relationship .heart { color: #d33; }
+
+/* Photos 3x3 grid */
+.photos-card { /* height constraints: keep it compact */
+  --max-h: 15svh;
+}
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  /* clamp: at most 15svh tall (or grow naturally if small) */
+  max-height: var(--max-h);
+  overflow: hidden;
+}
+.photo-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000; /* placeholder is black */
+}
+.photo-cell img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+.photo-cell.placeholder { background: #000; }
+
+/* Friends 3x3 grid */
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.friend-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none; color: inherit;
+  padding: 8px;
+  border-radius: 8px;
+}
+.friend-cell .avatar-circle {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f1f1f1;
+  display: inline-block;
+}
+.friend-cell .avatar-circle img {
+  width: 100%; height: 100%; object-fit: cover; display:block;
+}
+.friend-cell .label { margin-top: 6px; font-size: 12px; }
+.friend-cell.placeholder {
+  background: #000; height: 100%;
+}
+
+/* Make right column content full width */
+.profile-main .composer.card,
+.profile-main .post.card { width: 100%; margin-left: 0; margin-right: 0; }
+
+/* --- FRIENDS GRID: enforce squares and center content --- */
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.friend-cell,
+.friend-cell.placeholder {
+  position: relative;
+  aspect-ratio: 1 / 1;              /* square cells */
+  border-radius: 8px;
+  background: #0000;                /* transparent by default */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;          /* vertical center */
+  text-decoration: none;
+  color: inherit;
+  padding: 8px;
+}
+
+.friend-cell .avatar-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f1f1f1;
+  display: inline-block;
+}
+
+.friend-cell .avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.friend-cell .label {
+  margin-top: 6px;
+  font-size: 12px;
+  text-align: center;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* “missing friend” tiles should be black squares */
+.friend-cell.placeholder {
+  background: #000;
+}
+
+/* --- PHOTOS GRID: keep compact height cap (approximation) --- */
+/* Aim: no more than ~15% viewport height. If you want even stricter: use min(15svh, 33vh) */
+.photos-grid {
+  max-height: 15svh;    /* practical cap; keeps it compact on most screens */
+  overflow: hidden;
+}
+
+.friend-cell,
+.friend-cell.placeholder {
+  position: relative;
+  aspect-ratio: 1 / 1;              /* square cells */
+  border-radius: 8px;
+  background: #0000;                /* transparent by default */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;          /* vertical center */
+  text-decoration: none;
+  color: inherit;
+  padding: 8px;
+}
+
+.friend-cell .avatar-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f1f1f1;
+  display: inline-block;
+}
+
+.friend-cell .avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.friend-cell .label {
+  margin-top: 6px;
+  font-size: 12px;
+  text-align: center;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* “missing friend” tiles should be black squares */
+.friend-cell.placeholder {
+  background: #000;
+}
+
+/* --- PHOTOS GRID: keep compact height cap (approximation) --- */
+/* Aim: no more than ~15% viewport height. If you want even stricter: use min(15svh, 33vh) */
+.photos-grid {
+  max-height: min(15svh, 33vh);
+  overflow: hidden; /* may need to comment this out */
+}
+
+/* Responsive fallback */
+@media (max-width: 992px) {
+  #profile-posts.profile-posts {
+    grid-template-columns: 1fr;
+  }
+}

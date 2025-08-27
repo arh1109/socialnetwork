@@ -1,10 +1,12 @@
 from django.db import models
+from django.utils import timezone
 
 # feed/models.py
 class Post(models.Model):
     author = models.ForeignKey('accounts.User', on_delete=models.CASCADE, related_name='posts')
     text = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    edited_at = models.DateTimeField(null=True, blank=True) 
 
 class Media(models.Model):
     POST = 'post'

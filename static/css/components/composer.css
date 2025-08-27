@@ -1,0 +1,49 @@
+/* components/composer.css */
+
+/* layout */
+.composer-row { display:flex; gap:12px; align-items:flex-start; }
+.composer-row-1 { margin-bottom:12px; }
+.composer-row-2 { justify-content:space-between; align-items:center; }
+
+/* textarea (same behavior as create-post) */
+.composer-input textarea.composer-textarea {
+  width:100%;
+  max-height:160px;          /* stop expanding after this, then scroll */
+  resize:none;                /* autosize handled by JS */
+  overflow:auto;              /* scrollbar after max-height */
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:10px;
+}
+
+/* hidden file inputs (used by dynamic pickers) */
+.visually-hidden-file {
+  position:absolute;
+  width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0);
+  white-space:nowrap; border:0;
+}
+
+/* attachment thumbnails */
+.thumb-grid-wrap { margin:8px 0 10px; }
+.thumb-grid {
+  display:grid;
+  grid-template-columns: repeat(6, 60px);
+  gap:6px;
+  max-height:132px;          /* ~2 rows (60px + gap) */
+  overflow:hidden;
+  padding:4px 0;
+}
+.thumb-grid.expanded { max-height:none; }
+
+.thumb {
+  width:60px; height:60px;
+  border-radius:6px; overflow:hidden;
+  border:1px solid #ddd; background:#fafafa;
+  display:flex; align-items:center; justify-content:center;
+}
+.thumb img, .thumb video {
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+
+.avatar-link { text-decoration: none; color: inherit; display: inline-block; }

@@ -6,6 +6,8 @@
   <title>socialnetwork</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="{% static 'css/site.css' %}" rel="stylesheet">
+  <link href="{% static 'css/components/navbar.css' %}" rel="stylesheet">
+  {% block extra_css %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
   {% include "_navbar.html" %}
